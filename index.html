@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>For You, My Love 💞</title>
+<style>
+body{
+  margin:0;
+  font-family:'Georgia', serif;
+  text-align:center;
+  background:#000;
+  color:white;
+  overflow-x:hidden;
+  position:relative;
+}
+
+.hidden{display:none;}
+
+button{
+  padding:12px 25px;
+  margin:10px;
+  font-size:16px;
+  border:none;
+  border-radius:25px;
+  background:linear-gradient(45deg,#ff5f9e,#ff9a9e);
+  color:white;
+  cursor:pointer;
+}
+
+input{
+  padding:10px;
+  font-size:16px;
+  border-radius:8px;
+  border:none;
+}
+
+.overlay{
+  min-height:100vh;
+  background-size:cover;
+  background-position:center;
+  padding:40px 20px;
+}
+
+.gallery{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin:20px 0;
+}
+
+.gallery img{
+  width:220px;
+  margin:10px;
+  border-radius:15px;
+  box-shadow:0 8px 20px rgba(0,0,0,0.5);
+}
+
+.falling {
+  position: fixed;
+  top: -50px;
+  font-size: 24px;
+  z-index: 9999;
+  pointer-events: none;
+  animation-name: fall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes fall {
+  0% {transform: translateY(-50px);}
+  100% {transform: translateY(110vh);}
+}
+</style>
+</head>
+<body>
+
+<audio id="bgMusic" src="https://orangefreesounds.com/wp-content/uploads/2024/11/Instrumental-christmas-music.mp3" loop></audio>
+
+<!-- PASSWORD PAGE -->
+<div id="passwordPage">
+  <h2>Enter the secret password 💖</h2>
+  <input type="password" id="passwordInput" placeholder="Password">
+  <br><br>
+  <button onclick="checkPassword()">Unlock 💞</button>
+  <p id="error" style="color:#ff9a9e;"></p>
+</div>
+
+<!-- PAGE 1 -->
+<div id="page1" class="hidden">
+  <h2>1️⃣ Do you remember our first photo together? 💞</h2>
+  <button onclick="showPage('page2')">❤️ Yes</button>
+  <button onclick="showPage('page2')">😌 Of course</button>
+</div>
+
+<!-- PAGE 2 -->
+<div id="page2" class="hidden">
+  <h2>2️⃣ Do you remember our first hug 😊</h2>
+  <button onclick="showPage('page3')">❤️ Yes</button>
+  <button onclick="showPage('page3')">💖 Of course</button>
+</div>
+
+<!-- PAGE 3 -->
+<div id="page3" class="hidden">
+  <h2>3️⃣ Do you remember our first kiss 😘</h2>
+  <button onclick="showPage('page4')">😍 Yes!</button>
+  <button onclick="showPage('page4')">❤️ Absolutely</button>
+</div>
+
+<!-- PAGE 4 -->
+<div id="page4" class="hidden">
+  <h2>4️⃣ Are you ready for your Christmas gift? 🎁</h2>
+  <button onclick="showPage('countdown')">Yes! 🎄</button>
+</div>
+
+<!-- COUNTDOWN PAGE -->
+<div id="countdown" class="hidden">
+  <h2>Your heart knows what’s coming… 💓</h2>
+  <h1 id="counter">5</h1>
+  <p>Get ready ❤️</p>
+</div>
+
+<!-- FINAL PAGE -->
+<div id="finalPage" class="hidden overlay">
+  <h1>For You, My Love 💞🎄</h1>
+  <div class="gallery">
+    <img src="https://raw.githubusercontent.com/yourusername/For-you-my-Rasla/main/IMG-20251005-WA0029.jpg" alt="Our Memory 1">
+    <img src="https://raw.githubusercontent.com/yourusername/For-you-my-Rasla/main/IMG-20251129-WA0032.jpg" alt="Our Memory 2">
+  </div>
+  <p>
+    This Christmas is the most special day of my life,<br>
+    because I have you in it ❤️<br><br>
+    Your smile is my strength,<br>
+    your presence is my peace.<br>
+    The greatest gift God has ever given me is you 🎁✨<br><br>
+    Every moment we shared, every laugh we lived,<br>
+    I keep them safe in my heart.<br>
+    Today and always, my tomorrow belongs to you 💞
+  </p>
+  <h2>I love you always 💕</h2>
+</div>
+
+<script>
+document.addEventListener("click", function playOnce() {
+    const music = document.getElementById("bgMusic");
+    music.play().catch(()=>{});
+    document.removeEventListener("click", playOnce);
+});
+
+const correctPassword = "RAAHII";
+function checkPassword(){
+  const input = document.getElementById("passwordInput").value;
+  if(input === correctPassword){
+    document.getElementById("passwordPage").classList.add("hidden");
+    document.getElementById("page1").classList.remove("hidden");
+    createFallingElements();
+  } else {
+    document.getElementById("error").innerText = "Wrong password 💔";
+  }
+}
+
+function showPage(id){
+  ["page1","page2","page3","page4","countdown","finalPage"].forEach(p=>{
+    document.getElementById(p).classList.add("hidden");
+  });
+  document.getElementById(id).classList.remove("hidden");
+  if(id === "countdown") startCountdown();
+}
+
+function startCountdown(){
+  let count = 5;
+  const counter = document.getElementById("counter");
+  const interval = setInterval(()=>{
+    counter.innerText = count;
+    count--;
+    if(count < 0){
+      clearInterval(interval);
+      showPage("finalPage");
+    }
+  },1000);
+}
+
+function createFallingElements(){
+  const symbols = ['❄','❅','❆','❤️'];
+  for(let i=0; i<40; i++){
+    const el = document.createElement('div');
+    el.classList.add('falling');
+    el.style.left = Math.random()*100+'vw';
+    el.style.fontSize = (14+Math.random()*24)+'px';
+    el.style.animationDuration = (5+Math.random()*10)+'s';
+    el.innerText = symbols[Math.floor(Math.random()*symbols.length)];
+    document.body.appendChild(el);
+  }
+}
+</script>
+
+</body>
+  </html>
