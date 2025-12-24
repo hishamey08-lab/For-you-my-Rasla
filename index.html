@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>For You, My Love 💞</title>
+
 <style>
 body{
   margin:0;
@@ -11,7 +12,6 @@ body{
   background:#000;
   color:white;
   overflow-x:hidden;
-  position:relative;
 }
 
 .hidden{display:none;}
@@ -36,8 +36,6 @@ input{
 
 .overlay{
   min-height:100vh;
-  background-size:cover;
-  background-position:center;
   padding:40px 20px;
 }
 
@@ -52,29 +50,30 @@ input{
   width:220px;
   margin:10px;
   border-radius:15px;
-  box-shadow:0 8px 20px rgba(0,0,0,0.5);
+  box-shadow:0 8px 20px rgba(0,0,0,0.6);
 }
 
-.falling {
-  position: fixed;
-  top: -50px;
-  font-size: 24px;
-  z-index: 9999;
-  pointer-events: none;
-  animation-name: fall;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
+.falling{
+  position:fixed;
+  top:-50px;
+  font-size:24px;
+  pointer-events:none;
+  animation:fall linear infinite;
+  z-index:9999;
 }
 
-@keyframes fall {
-  0% {transform: translateY(-50px);}
-  100% {transform: translateY(110vh);}
+@keyframes fall{
+  0%{transform:translateY(-50px);}
+  100%{transform:translateY(110vh);}
 }
 </style>
 </head>
+
 <body>
 
-<audio id="bgMusic" src="https://orangefreesounds.com/wp-content/uploads/2024/11/Instrumental-christmas-music.mp3" loop></audio>
+<audio id="bgMusic" loop>
+  <source src="https://orangefreesounds.com/wp-content/uploads/2024/11/Instrumental-christmas-music.mp3" type="audio/mpeg">
+</audio>
 
 <!-- PASSWORD PAGE -->
 <div id="passwordPage">
@@ -112,7 +111,7 @@ input{
   <button onclick="showPage('countdown')">Yes! 🎄</button>
 </div>
 
-<!-- COUNTDOWN PAGE -->
+<!-- COUNTDOWN -->
 <div id="countdown" class="hidden">
   <h2>Your heart knows what’s coming… 💓</h2>
   <h1 id="counter">5</h1>
@@ -122,10 +121,12 @@ input{
 <!-- FINAL PAGE -->
 <div id="finalPage" class="hidden overlay">
   <h1>For You, My Love 💞🎄</h1>
+
   <div class="gallery">
-    <img src="https://raw.githubusercontent.com/yourusername/For-you-my-Rasla/main/IMG-20251005-WA0029.jpg" alt="Our Memory 1">
-    <img src="https://raw.githubusercontent.com/yourusername/For-you-my-Rasla/main/IMG-20251129-WA0032.jpg" alt="Our Memory 2">
+    <img src="https://raw.githubusercontent.com/hamey08-lab/For-you-my-Rasla/main/IMG-20251005-WA0029.jpg" alt="Our Memory 1">
+    <img src="https://raw.githubusercontent.com/hamey08-lab/For-you-my-Rasla/main/IMG-20251129-WA0032.jpg" alt="Our Memory 2">
   </div>
+
   <p>
     This Christmas is the most special day of my life,<br>
     because I have you in it ❤️<br><br>
@@ -136,24 +137,29 @@ input{
     I keep them safe in my heart.<br>
     Today and always, my tomorrow belongs to you 💞
   </p>
+
   <h2>I love you always 💕</h2>
 </div>
 
 <script>
-document.addEventListener("click", function playOnce() {
-    const music = document.getElementById("bgMusic");
-    music.play().catch(()=>{});
-    document.removeEventListener("click", playOnce);
+const music = document.getElementById("bgMusic");
+
+// Play music on first click (mobile safe)
+document.addEventListener("click", function playOnce(){
+  music.volume = 0.6;
+  music.play().catch(()=>{});
+  document.removeEventListener("click", playOnce);
 });
 
 const correctPassword = "RAAHII";
+
 function checkPassword(){
   const input = document.getElementById("passwordInput").value;
   if(input === correctPassword){
     document.getElementById("passwordPage").classList.add("hidden");
     document.getElementById("page1").classList.remove("hidden");
-    createFallingElements();
-  } else {
+    createFalling();
+  }else{
     document.getElementById("error").innerText = "Wrong password 💔";
   }
 }
@@ -163,35 +169,37 @@ function showPage(id){
     document.getElementById(p).classList.add("hidden");
   });
   document.getElementById(id).classList.remove("hidden");
-  if(id === "countdown") startCountdown();
+  music.play().catch(()=>{});
+  if(id==="countdown") startCountdown();
 }
 
 function startCountdown(){
   let count = 5;
   const counter = document.getElementById("counter");
-  const interval = setInterval(()=>{
-    counter.innerText = count;
+  counter.innerText = count;
+  const timer = setInterval(()=>{
     count--;
+    counter.innerText = count;
     if(count < 0){
-      clearInterval(interval);
+      clearInterval(timer);
       showPage("finalPage");
     }
   },1000);
 }
 
-function createFallingElements(){
-  const symbols = ['❄','❅','❆','❤️'];
-  for(let i=0; i<40; i++){
-    const el = document.createElement('div');
-    el.classList.add('falling');
-    el.style.left = Math.random()*100+'vw';
-    el.style.fontSize = (14+Math.random()*24)+'px';
-    el.style.animationDuration = (5+Math.random()*10)+'s';
+function createFalling(){
+  const symbols = ["❄","❅","❆","❤️"];
+  for(let i=0;i<50;i++){
+    const el = document.createElement("div");
+    el.className = "falling";
     el.innerText = symbols[Math.floor(Math.random()*symbols.length)];
+    el.style.left = Math.random()*100 + "vw";
+    el.style.fontSize = (14 + Math.random()*24) + "px";
+    el.style.animationDuration = (5 + Math.random()*10) + "s";
     document.body.appendChild(el);
   }
 }
 </script>
 
 </body>
-  </html>
+</html>
